@@ -4,7 +4,7 @@ import { MaintenanceConfig, PageConfig, WorkerConfig } from './types/config'
 /**
  * =========================
  * Status Page（中文 + 分组）
- * 注意：你的 PageConfig 不支持 description，所以不要写 description
+ * 你的 PageConfig 使用的是 group（单数），不是 groups
  * =========================
  */
 const pageConfig: PageConfig = {
@@ -17,8 +17,8 @@ const pageConfig: PageConfig = {
     { link: 'https://img.kvx.me', label: '图床2' },
   ],
 
-  // 如果你的前端支持 groups，这里就会按组显示；不支持也不会影响监控，只是不分组展示
-  groups: [
+  // ✅ 注意：这里是 group（不是 groups）
+  group: [
     {
       name: '🌐 网站服务',
       monitors: ['kvx-blog', 'pan-sepr', 'img-45678', 'img-kvx'],
