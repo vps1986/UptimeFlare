@@ -67,7 +67,7 @@ const workerConfig: WorkerConfig = {
     },
     {
       id: 'web-github',
-      name: '📦 github（github下载）',
+      name: '📦 git.kvx.me（git下载）',
       method: 'GET',
       target: 'https://git.kvx.me',
       statusPageLink: 'https://git.kvx.me',
