@@ -30,12 +30,17 @@ function filterIncidentsByMonth(
   return incidents
     .filter((incident) => {
       const d = new Date(incident.start)
-      const incidentMonth = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
+      const incidentMonth =
+        d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
       return incidentMonth === monthStr
     })
-    .map((e) => ({
-      ...e,
-      monitors: (e.monitors || []).map((e) => workerConfig.monitors.find((mon) => mon.id === e)!),
+    .map((incident) => ({
+      ...incident,
+      monitors: (incident.monitors || []).map((id) =>
+        workerConfig.monitors.find(
+          (mon: { id: string }) => mon.id === id
+        )!
+      ),
     }))
     .sort((a, b) => (new Date(a.start) > new Date(b.start) ? -1 : 1))
 }
@@ -66,7 +71,9 @@ export default function IncidentsPage() {
 
   const filteredIncidents = filterIncidentsByMonth(maintenances, selectedMonth)
   const monitorFilteredIncidents = selectedMonitor
-    ? filteredIncidents.filter((i) => i.monitors.find((e) => e.id === selectedMonitor))
+    ? filteredIncidents.filter((i) =>
+        i.monitors.find((m) => m.id === selectedMonitor)
+      )
     : filteredIncidents
 
   const { prev, next } = getPrevNextMonth(selectedMonth)
@@ -87,11 +94,7 @@ export default function IncidentsPage() {
       </Head>
 
       <main className={inter.className}>
-        <Header
-          style={{
-            marginBottom: '40px',
-          }}
-        />
+        <Header style={{ marginBottom: '40px' }} />
         <Center>
           <Container size="md" style={{ width: '100%' }}>
             <Group justify="end" mb="md">
@@ -101,9 +104,10 @@ export default function IncidentsPage() {
                 value={selectedMonitor}
                 onChange={setSelectedMonitor}
                 clearable
-                style={{ maxWidth: 300, float: 'right' }}
+                style={{ maxWidth: 300 }}
               />
             </Group>
+
             <Box>
               {monitorFilteredIncidents.length === 0 ? (
                 <NoIncidentsAlert />
@@ -113,14 +117,23 @@ export default function IncidentsPage() {
                 ))
               )}
             </Box>
+
             <Group justify="space-between" mt="md">
-              <Button variant="default" onClick={() => (window.location.hash = prev)}>
+              <Button
+                variant="default"
+                onClick={() => (window.location.hash = prev)}
+              >
                 {t('Backwards')}
               </Button>
+
               <Box style={{ alignSelf: 'center', fontWeight: 500, fontSize: 18 }}>
                 {selectedMonth}
               </Box>
-              <Button variant="default" onClick={() => (window.location.hash = next)}>
+
+              <Button
+                variant="default"
+                onClick={() => (window.location.hash = next)}
+              >
                 {t('Forward')}
               </Button>
             </Group>
