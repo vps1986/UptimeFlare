@@ -1,10 +1,11 @@
-// uptime.config.ts
+// Don't edit this line
 import { MaintenanceConfig, PageConfig, WorkerConfig } from './types/config'
 
 /**
  * =========================
- * Status Page（中文 + 分组）
- * 你的 PageConfig 使用的是 group（单数），不是 groups
+ * Status Page（中文美化 + 分组）
+ * 你这个版本的 PageConfig.group 是 string[][]
+ * 写法：['组名', 'monitorId1', 'monitorId2', ...]
  * =========================
  */
 const pageConfig: PageConfig = {
@@ -17,29 +18,25 @@ const pageConfig: PageConfig = {
     { link: 'https://img.kvx.me', label: '图床2' },
   ],
 
-  // ✅ 注意：这里是 group（不是 groups）
+  // ✅ 分组：每个数组第一个元素是“组名”，后面是 monitor id
   group: [
-    {
-      name: '🌐 网站服务',
-      monitors: ['kvx-blog', 'pan-sepr', 'img-45678', 'img-kvx'],
-    },
-    {
-      name: '🖥 节点 / SSH',
-      monitors: ['ssh-ggc', 'ssh-diylink', 'ssh-ikoula', 'ssh-aliyun'],
-    },
+    ['🌐 网站服务', 'kvx-blog', 'pan-sepr', 'img-45678', 'img-kvx'],
+    ['🖥 节点 / SSH', 'ssh-ggc', 'ssh-diylink', 'ssh-ikoula', 'ssh-aliyun'],
   ],
 }
 
 /**
  * =========================
  * Worker monitors（不同组不同频率）
- * 网站：2 分钟一次
- * 节点：1 分钟一次
+ * - 网站：2 分钟一次
+ * - 节点：1 分钟一次
  * =========================
  */
 const workerConfig: WorkerConfig = {
   monitors: [
-    // ===== 🌐 网站服务（2 分钟）=====
+    /**
+     * ===== 🌐 网站服务（2 分钟）=====
+     */
     {
       id: 'kvx-blog',
       name: '📝 kvx.me（博客）',
@@ -81,7 +78,10 @@ const workerConfig: WorkerConfig = {
       interval: 2,
     },
 
-    // ===== 🖥 节点 / SSH（1 分钟）=====
+    /**
+     * ===== 🖥 节点 / SSH（1 分钟）=====
+     * 仅 TCP 22 端口探测（不登录）
+     */
     {
       id: 'ssh-ggc',
       name: '🇺🇸 乔治 ggc（SSH）',
@@ -119,9 +119,10 @@ const workerConfig: WorkerConfig = {
 
 /**
  * =========================
- * Maintenances（没用就空数组）
+ * Maintenances（不需要就空数组）
  * =========================
  */
 const maintenances: MaintenanceConfig[] = []
 
+// Don't edit this line
 export { maintenances, pageConfig, workerConfig }
