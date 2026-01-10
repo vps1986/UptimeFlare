@@ -10,9 +10,9 @@ const pageConfig: PageConfig = {
   title: "lyc8503's Status Page",
   // Links shown at the header of your status page, could set `highlight` to `true`
   links: [
-    { link: 'https://github.com/lyc853', label: 'GitHub' },
-    { link: 'https://blog.lyc503.net/', label: 'Blog' },
-    { link: 'mailto:me@lyc8503.net', label: 'Email Me', highlight: true },
+    { link: 'https://pan.sept.cc', label: '网盘' },
+    { link: 'https://45678.eu.org', label: '简单图床' },
+    { link: 'https://kvx.me', label: '博客', highlight: true },
   ],
 }
 
