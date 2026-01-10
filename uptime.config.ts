@@ -1,16 +1,20 @@
-// uptime.config.ts
+// This is a simplified config file (KVX customized)
+// Keep the named exports at the bottom: maintenances / pageConfig / workerConfig
 
-import type { PageConfig, WorkerConfig, MaintenanceConfig } from './src/types'
+// Don't edit this line
+import { MaintenanceConfig, PageConfig, WorkerConfig } from './types/config'
 
 /**
  * =========================
- * 状态页（中文美化 + 分组展示）
+ * Status Page (中文美化 + 分组)
  * =========================
  */
-export const pageConfig: PageConfig = {
+const pageConfig: PageConfig = {
+  // Title for your status page
   title: 'KVX 状态页',
   description: '网站与节点可用性监控',
 
+  // Links shown at the header of your status page
   links: [
     { link: 'https://kvx.me', label: '博客', highlight: true },
     { link: 'https://pan.sepr.cc', label: '网盘' },
@@ -18,7 +22,7 @@ export const pageConfig: PageConfig = {
     { link: 'https://img.kvx.me', label: '图床2' },
   ],
 
-  // 分组展示（写 monitor 的 id）
+  // 分组展示：monitors 填 workerConfig.monitors 里的 id
   groups: [
     {
       name: '🌐 网站服务',
@@ -33,15 +37,16 @@ export const pageConfig: PageConfig = {
 
 /**
  * =========================
- * Worker 监控（不同组不同频率）
+ * Worker monitors
  * =========================
- * 网站：2 分钟一次
- * 节点：1 分钟一次（TCP 22 端口探测）
+ * - 网站：每 2 分钟一次
+ * - 节点/SSH：每 1 分钟一次（TCP 22 端口探测，不登录）
  */
-export const workerConfig: WorkerConfig = {
+const workerConfig: WorkerConfig = {
+  // Define all your monitors here
   monitors: [
     /**
-     * ===== 🌐 网站服务（2 分钟） =====
+     * ===== 🌐 网站服务（2 分钟）=====
      */
     {
       id: 'kvx-blog',
@@ -63,7 +68,7 @@ export const workerConfig: WorkerConfig = {
       expectedCodes: [200, 301, 302],
       timeout: 10000,
       interval: 2,
-      tooltip: '文件网盘服务',
+      tooltip: '网盘服务',
     },
     {
       id: 'img-45678',
@@ -90,7 +95,7 @@ export const workerConfig: WorkerConfig = {
 
     /**
      * ===== 🖥 节点 / SSH（1 分钟）=====
-     * 仅 TCP 端口探测，不登录 SSH
+     * 仅 TCP 22 探测（更安全）
      */
     {
       id: 'ssh-ggc',
@@ -129,20 +134,17 @@ export const workerConfig: WorkerConfig = {
       tooltip: 'TCP 22 端口探测',
     },
   ],
+
+  // 可选：通知/展示时区（不开通知也不影响）
+  timeZone: 'Asia/Shanghai',
 }
 
 /**
  * =========================
- * 维护窗口（必须导出，util.ts 会 import）
+ * Maintenances（不需要就留空数组）
  * =========================
  */
-export const maintenances: MaintenanceConfig[] = []
+const maintenances: MaintenanceConfig[] = []
 
-/**
- * 有的地方可能用 default export，这里也一并提供（不影响具名导出）
- */
-export default {
-  pageConfig,
-  workerConfig,
-  maintenances,
-}
+// Don't edit this line
+export { maintenances, pageConfig, workerConfig }
