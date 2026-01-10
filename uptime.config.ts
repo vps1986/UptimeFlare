@@ -76,7 +76,7 @@ const workerConfig: WorkerConfig = {
     },
     {
       id: 'ssh-diylink',
-      name: ''🇭🇰 diylink',
+      name: '🇭🇰 diylink',
       method: 'TCP_PING',
       target: '156.255.90.199:22',
       timeout: 10000,
@@ -99,7 +99,7 @@ const workerConfig: WorkerConfig = {
     // ✅ 新增：alice IPv6 22 端口监控
     {
       id: 'ssh-alice6',
-      name: ''🇭🇰 alice',
+      name: '🇭🇰 alice',
       method: 'TCP_PING',
       // IPv6 必须用 [IPv6]:port 形式
       target: '[2a14:67c0:302:243::a]:22',
