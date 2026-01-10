@@ -1,134 +1,137 @@
-// This is a simplified example config file for quickstart
-// Some not frequently used features are omitted/commented out here
-// For a full-featured example, please refer to `uptime.config.full.ts`
+// uptime.config.ts
+// 直接整文件替换你仓库根目录的 uptime.config.ts 即可
 
-// Don't edit this line
-import { MaintenanceConfig, PageConfig, WorkerConfig } from './types/config'
+import type { PageConfig, WorkerConfig } from './src/types'
 
+/**
+ * =========================
+ * 中文美化：状态页信息
+ * =========================
+ */
 const pageConfig: PageConfig = {
-  // Title for your status page
-  title: "lyc8503's Status Page",
-  // Links shown at the header of your status page, could set `highlight` to `true`
+  title: 'KVX 状态监控',
+  description: '网站 & 节点可用性监控（UptimeFlare + Cloudflare Workers）',
+  // 右上角链接（可自行增删）
   links: [
-    { link: 'https://pan.sept.cc/', label: '网盘' },
-    { link: 'https://45678.eu.org', label: '简单图床' },
-    { link: 'https://kvx.me', label: '博客', highlight: true },
+    { link: 'https://kvx.me', label: '博客' },
+    { link: 'https://pan.sepr.cc', label: '网盘' },
+    { link: 'https://github.com/vps1986/UptimeFlare', label: '项目' },
+  ],
+
+  /**
+   * =========================
+   * 分组（页面展示顺序）
+   * =========================
+   * 注意：分组只影响页面展示与排序，不影响监控本身。
+   */
+  groups: [
+    {
+      name: '🌐 网站服务',
+      monitors: ['kvx-blog', 'pan-sepr', 'img-45678', 'img-kvx'],
+    },
+    {
+      name: '🖥 节点 / SSH',
+      monitors: ['ssh-ggc', 'ssh-diylink', 'ssh-ikoula', 'ssh-aliyun'],
+    },
   ],
 }
 
+/**
+ * =========================
+ * 监控配置（Worker 端）
+ * =========================
+ * - HTTP/HTTPS：method 用 GET/POST 等，target 用 URL
+ * - SSH/端口：method 用 TCP_PING，target 用 "ip:port"
+ */
 const workerConfig: WorkerConfig = {
-  // Define all your monitors here
+  // 可选：若想私有状态页，取消注释并改成你自己的账号密码
+  // passwordProtection: 'username:password',
+
   monitors: [
-    // Example HTTP Monitor
+    /**
+     * =========================
+     * 🌐 网站服务（频率：每 2 分钟）
+     * =========================
+     */
     {
-      // `id` should be unique, history will be kept if the `id` remains constant
-      id: '博客monitor',
-      // `name` is used at status page and callback message
-      name: 'My API Monitor',
-      // `method` should be a valid HTTP Method
+      id: 'kvx-blog',
+      name: '📝 kvx.me 博客',
       method: 'GET',
-      // `target` is a valid URL
       target: 'https://kvx.me',
-      // [OPTIONAL] `tooltip` is ONLY used at status page to show a tooltip
-      tooltip: 'This is a tooltip for this monitor',
-      // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
-      statusPageLink: 'https://kvx.me',
-      // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
-      expectedCodes: [200],
-      // [OPTIONAL] `timeout` in millisecond, if not specified, default to 10000
+      interval: 2, // 2 分钟一次（不同组不同频率：网站组）
       timeout: 10000,
-      // [OPTIONAL] headers to be sent
-      headers: {
-        'User-Agent': 'Uptimeflare',
-        Authorization: 'Bearer YOUR_TOKEN_HERE',
-      },
-      // [OPTIONAL] body to be sent (require POST/PUT/PATCH method)
-      // body: 'Hello, world!',
-      // [OPTIONAL] if specified, the response must contains the keyword to be considered as operational.
-      // responseKeyword: 'success',
-      // [OPTIONAL] if specified, the response must NOT contains the keyword to be considered as operational.
-      // responseForbiddenKeyword: 'bad gateway',
-      // [OPTIONAL] if specified, will call the check proxy to check the monitor, mainly for geo-specific checks
-      // refer to docs https://github.com/lyc8503/UptimeFlare/wiki/Check-proxy-setup before setting this value
-      // currently supports `worker://`, `globalping://` and `http(s)://` proxies
-      // checkProxy: 'worker://weur',
-      // [OPTIONAL] if true, the check will fallback to local if the specified proxy is down
-      // checkProxyFallback: true,
+      expectedCodes: [200, 301, 302],
     },
-    // Example TCP Monitor
     {
-      id: 'test_tcp_monitor',
-      name: 'Example TCP Monitor',
-      // `method` should be `TCP_PING` for tcp monitors
+      id: 'pan-sepr',
+      name: '🗂️ pan.sepr.cc 网盘',
+      method: 'GET',
+      target: 'https://pan.sepr.cc',
+      interval: 2,
+      timeout: 10000,
+      expectedCodes: [200, 301, 302],
+    },
+    {
+      id: 'img-45678',
+      name: '🖼️ 45678.eu.org 图床1',
+      method: 'GET',
+      target: 'https://45678.eu.org',
+      interval: 2,
+      timeout: 10000,
+      expectedCodes: [200, 301, 302],
+    },
+    {
+      id: 'img-kvx',
+      name: '🖼️ img.kvx.me 图床2',
+      method: 'GET',
+      target: 'https://img.kvx.me',
+      interval: 2,
+      timeout: 10000,
+      expectedCodes: [200, 301, 302],
+    },
+
+    /**
+     * =========================
+     * 🖥 节点 / SSH（频率：每 1 分钟）
+     * =========================
+     * 说明：这里只做 TCP 22 端口探测（不登录，更安全）
+     */
+    {
+      id: 'ssh-ggc',
+      name: '🇺🇸 乔治 ggc（SSH）',
       method: 'TCP_PING',
-      // `target` should be `host:port` for tcp monitors
-      target: '1.2.3.4:22',
-      tooltip: 'My production server SSH',
-      statusPageLink: 'https://example.com',
-      timeout: 5000,
+      target: '23.173.152.59:22',
+      interval: 1, // 1 分钟一次（不同组不同频率：节点组）
+      timeout: 10000,
+    },
+    {
+      id: 'ssh-diylink',
+      name: '🇺🇸 diylink（SSH）',
+      method: 'TCP_PING',
+      target: '156.255.90.199:22',
+      interval: 1,
+      timeout: 10000,
+    },
+    {
+      id: 'ssh-ikoula',
+      name: '🇫🇷 ikoula（SSH）',
+      method: 'TCP_PING',
+      target: '109.238.6.180:22',
+      interval: 1,
+      timeout: 10000,
+    },
+    {
+      id: 'ssh-aliyun',
+      name: '🇸🇬 阿里云（SSH）',
+      method: 'TCP_PING',
+      target: '8.219.168.105:22',
+      interval: 1,
+      timeout: 10000,
     },
   ],
-  // [Optional] Notification settings
-  notification: {
-    // [Optional] Notification webhook settings, if not specified, no notification will be sent
-    // More info at Wiki: https://github.com/lyc8503/UptimeFlare/wiki/Setup-notification
-    webhook: {
-      // [Required] webhook URL (example: Telegram Bot API)
-      url: 'https://api.telegram.org/bot123456:ABCDEF/sendMessage',
-      // [Optional] HTTP method, default to 'GET' for payloadType=param, 'POST' otherwise
-      // method: 'POST',
-      // [Optional] headers to be sent
-      // headers: {
-      //   foo: 'bar',
-      // },
-      // [Required] Specify how to encode the payload
-      // Should be one of 'param', 'json' or 'x-www-form-urlencoded'
-      // 'param': append url-encoded payload to URL search parameters
-      // 'json': POST json payload as body, set content-type header to 'application/json'
-      // 'x-www-form-urlencoded': POST url-encoded payload as body, set content-type header to 'x-www-form-urlencoded'
-      payloadType: 'x-www-form-urlencoded',
-      // [Required] payload to be sent
-      // $MSG will be replaced with the human-readable notification message
-      payload: {
-        chat_id: 12345678,
-        text: '$MSG',
-      },
-      // [Optional] timeout calling this webhook, in millisecond, default to 5000
-      timeout: 10000,
-    },
-    // [Optional] timezone used in notification messages, default to "Etc/GMT"
-    timeZone: 'Asia/Shanghai',
-    // [Optional] grace period in minutes before sending a notification
-    // notification will be sent only if the monitor is down for N continuous checks after the initial failure
-    // if not specified, notification will be sent immediately
-    gracePeriod: 5,
-  },
 }
 
-// You can define multiple maintenances here
-// During maintenance, an alert will be shown at status page
-// Also, related downtime notifications will be skipped (if any)
-// Of course, you can leave it empty if you don't need this feature
-
-// const maintenances: MaintenanceConfig[] = []
-
-const maintenances: MaintenanceConfig[] = [
-  {
-    // [Optional] Monitor IDs to be affected by this maintenance
-    monitors: ['foo_monitor', 'bar_monitor'],
-    // [Optional] default to "Scheduled Maintenance" if not specified
-    title: 'Test Maintenance',
-    // Description of the maintenance, will be shown at status page
-    body: 'This is a test maintenance, server software upgrade',
-    // Start time of the maintenance, in UNIX timestamp or ISO 8601 format
-    start: '2020-01-01T00:00:00+08:00',
-    // [Optional] end time of the maintenance, in UNIX timestamp or ISO 8601 format
-    // if not specified, the maintenance will be considered as on-going
-    end: '2050-01-01T00:00:00+08:00',
-    // [Optional] color of the maintenance alert at status page, default to "yellow"
-    color: 'blue',
-  },
-]
-
-// Don't edit this line
-export { maintenances, pageConfig, workerConfig }
+export default {
+  pageConfig,
+  workerConfig,
+}
