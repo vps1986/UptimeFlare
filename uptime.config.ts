@@ -1,29 +1,24 @@
 // uptime.config.ts
-// 直接整文件替换你仓库根目录的 uptime.config.ts 即可
 
-import type { PageConfig, WorkerConfig } from './src/types'
+import type { PageConfig, WorkerConfig, MaintenanceConfig } from './src/types'
 
 /**
  * =========================
- * 中文美化：状态页信息
+ * 状态页（中文美化 + 分组展示）
  * =========================
  */
-const pageConfig: PageConfig = {
-  title: 'KVX 状态监控',
-  description: '网站 & 节点可用性监控（UptimeFlare + Cloudflare Workers）',
-  // 右上角链接（可自行增删）
+export const pageConfig: PageConfig = {
+  title: 'KVX 状态页',
+  description: '网站与节点可用性监控',
+
   links: [
-    { link: 'https://kvx.me', label: '博客' },
+    { link: 'https://kvx.me', label: '博客', highlight: true },
     { link: 'https://pan.sepr.cc', label: '网盘' },
-    { link: 'https://github.com/vps1986/UptimeFlare', label: '项目' },
+    { link: 'https://45678.eu.org', label: '图床1' },
+    { link: 'https://img.kvx.me', label: '图床2' },
   ],
 
-  /**
-   * =========================
-   * 分组（页面展示顺序）
-   * =========================
-   * 注意：分组只影响页面展示与排序，不影响监控本身。
-   */
+  // 分组展示（写 monitor 的 id）
   groups: [
     {
       name: '🌐 网站服务',
@@ -38,100 +33,116 @@ const pageConfig: PageConfig = {
 
 /**
  * =========================
- * 监控配置（Worker 端）
+ * Worker 监控（不同组不同频率）
  * =========================
- * - HTTP/HTTPS：method 用 GET/POST 等，target 用 URL
- * - SSH/端口：method 用 TCP_PING，target 用 "ip:port"
+ * 网站：2 分钟一次
+ * 节点：1 分钟一次（TCP 22 端口探测）
  */
-const workerConfig: WorkerConfig = {
-  // 可选：若想私有状态页，取消注释并改成你自己的账号密码
-  // passwordProtection: 'username:password',
-
+export const workerConfig: WorkerConfig = {
   monitors: [
     /**
-     * =========================
-     * 🌐 网站服务（频率：每 2 分钟）
-     * =========================
+     * ===== 🌐 网站服务（2 分钟） =====
      */
     {
       id: 'kvx-blog',
-      name: '📝 kvx.me 博客',
+      name: '📝 kvx.me（博客）',
       method: 'GET',
       target: 'https://kvx.me',
-      interval: 2, // 2 分钟一次（不同组不同频率：网站组）
-      timeout: 10000,
+      statusPageLink: 'https://kvx.me',
       expectedCodes: [200, 301, 302],
+      timeout: 10000,
+      interval: 2,
+      tooltip: 'KVX 博客主站',
     },
     {
       id: 'pan-sepr',
-      name: '🗂️ pan.sepr.cc 网盘',
+      name: '🗂️ pan.sepr.cc（网盘）',
       method: 'GET',
       target: 'https://pan.sepr.cc',
-      interval: 2,
-      timeout: 10000,
+      statusPageLink: 'https://pan.sepr.cc',
       expectedCodes: [200, 301, 302],
+      timeout: 10000,
+      interval: 2,
+      tooltip: '文件网盘服务',
     },
     {
       id: 'img-45678',
-      name: '🖼️ 45678.eu.org 图床1',
+      name: '🖼️ 45678.eu.org（图床1）',
       method: 'GET',
       target: 'https://45678.eu.org',
-      interval: 2,
-      timeout: 10000,
+      statusPageLink: 'https://45678.eu.org',
       expectedCodes: [200, 301, 302],
+      timeout: 10000,
+      interval: 2,
+      tooltip: '图床服务 1',
     },
     {
       id: 'img-kvx',
-      name: '🖼️ img.kvx.me 图床2',
+      name: '🖼️ img.kvx.me（图床2）',
       method: 'GET',
       target: 'https://img.kvx.me',
-      interval: 2,
-      timeout: 10000,
+      statusPageLink: 'https://img.kvx.me',
       expectedCodes: [200, 301, 302],
+      timeout: 10000,
+      interval: 2,
+      tooltip: '图床服务 2',
     },
 
     /**
-     * =========================
-     * 🖥 节点 / SSH（频率：每 1 分钟）
-     * =========================
-     * 说明：这里只做 TCP 22 端口探测（不登录，更安全）
+     * ===== 🖥 节点 / SSH（1 分钟）=====
+     * 仅 TCP 端口探测，不登录 SSH
      */
     {
       id: 'ssh-ggc',
       name: '🇺🇸 乔治 ggc（SSH）',
       method: 'TCP_PING',
       target: '23.173.152.59:22',
-      interval: 1, // 1 分钟一次（不同组不同频率：节点组）
       timeout: 10000,
+      interval: 1,
+      tooltip: 'TCP 22 端口探测',
     },
     {
       id: 'ssh-diylink',
       name: '🇺🇸 diylink（SSH）',
       method: 'TCP_PING',
       target: '156.255.90.199:22',
-      interval: 1,
       timeout: 10000,
+      interval: 1,
+      tooltip: 'TCP 22 端口探测',
     },
     {
       id: 'ssh-ikoula',
       name: '🇫🇷 ikoula（SSH）',
       method: 'TCP_PING',
       target: '109.238.6.180:22',
-      interval: 1,
       timeout: 10000,
+      interval: 1,
+      tooltip: 'TCP 22 端口探测',
     },
     {
       id: 'ssh-aliyun',
       name: '🇸🇬 阿里云（SSH）',
       method: 'TCP_PING',
       target: '8.219.168.105:22',
-      interval: 1,
       timeout: 10000,
+      interval: 1,
+      tooltip: 'TCP 22 端口探测',
     },
   ],
 }
 
+/**
+ * =========================
+ * 维护窗口（必须导出，util.ts 会 import）
+ * =========================
+ */
+export const maintenances: MaintenanceConfig[] = []
+
+/**
+ * 有的地方可能用 default export，这里也一并提供（不影响具名导出）
+ */
 export default {
   pageConfig,
   workerConfig,
+  maintenances,
 }
