@@ -1,12 +1,8 @@
-// This is a simplified config file
-// Don't edit this line
 import { MaintenanceConfig, PageConfig, WorkerConfig } from './types/config'
 
 const pageConfig: PageConfig = {
-  // Title for your status page
   title: 'KVX 状态页',
 
-  // Links shown at the header of your status page, could set `highlight` to `true`
   links: [
     { link: 'https://kvx.me', label: '博客', highlight: true },
     { link: 'https://pan.sepr.cc', label: '网盘' },
@@ -14,10 +10,7 @@ const pageConfig: PageConfig = {
     { link: 'https://img.kvx.me', label: '图床2' },
   ],
 
-  /**
-   * ✅ 分组（你的类型是 PageConfigGroup：Record<string, string[]>）
-   * 写法：{ '组名': ['monitorId1','monitorId2'] }
-   */
+  // ✅ 你的 PageConfig.group 类型是 PageConfigGroup（对象映射）
   group: {
     '🌐 网站服务': ['kvx-blog', 'pan-sepr', 'img-45678', 'img-kvx'],
     '🖥 节点 / SSH': ['ssh-ggc', 'ssh-diylink', 'ssh-ikoula', 'ssh-aliyun'],
@@ -28,7 +21,7 @@ const workerConfig: WorkerConfig = {
   monitors: [
     /**
      * =========================
-     * 🌐 网站服务（2 分钟一次）
+     * 🌐 网站服务
      * =========================
      */
     {
@@ -40,7 +33,6 @@ const workerConfig: WorkerConfig = {
       statusPageLink: 'https://kvx.me',
       expectedCodes: [200, 301, 302],
       timeout: 10000,
-      interval: 2,
     },
     {
       id: 'pan-sepr',
@@ -51,7 +43,6 @@ const workerConfig: WorkerConfig = {
       statusPageLink: 'https://pan.sepr.cc',
       expectedCodes: [200, 301, 302],
       timeout: 10000,
-      interval: 2,
     },
     {
       id: 'img-45678',
@@ -62,7 +53,6 @@ const workerConfig: WorkerConfig = {
       statusPageLink: 'https://45678.eu.org',
       expectedCodes: [200, 301, 302],
       timeout: 10000,
-      interval: 2,
     },
     {
       id: 'img-kvx',
@@ -73,13 +63,11 @@ const workerConfig: WorkerConfig = {
       statusPageLink: 'https://img.kvx.me',
       expectedCodes: [200, 301, 302],
       timeout: 10000,
-      interval: 2,
     },
 
     /**
      * =========================
-     * 🖥 节点 / SSH（1 分钟一次）
-     * TCP 22 端口探测（不登录 SSH）
+     * 🖥 节点 / SSH（TCP 探测 22）
      * =========================
      */
     {
@@ -87,42 +75,36 @@ const workerConfig: WorkerConfig = {
       name: '🇺🇸 乔治 ggc（SSH）',
       method: 'TCP_PING',
       target: '23.173.152.59:22',
-      tooltip: 'TCP 22 端口探测',
+      tooltip: 'TCP 22 端口探测（不登录）',
       timeout: 10000,
-      interval: 1,
     },
     {
       id: 'ssh-diylink',
       name: '🇺🇸 diylink（SSH）',
       method: 'TCP_PING',
       target: '156.255.90.199:22',
-      tooltip: 'TCP 22 端口探测',
+      tooltip: 'TCP 22 端口探测（不登录）',
       timeout: 10000,
-      interval: 1,
     },
     {
       id: 'ssh-ikoula',
       name: '🇫🇷 ikoula（SSH）',
       method: 'TCP_PING',
       target: '109.238.6.180:22',
-      tooltip: 'TCP 22 端口探测',
+      tooltip: 'TCP 22 端口探测（不登录）',
       timeout: 10000,
-      interval: 1,
     },
     {
       id: 'ssh-aliyun',
       name: '🇸🇬 阿里云（SSH）',
       method: 'TCP_PING',
       target: '8.219.168.105:22',
-      tooltip: 'TCP 22 端口探测',
+      tooltip: 'TCP 22 端口探测（不登录）',
       timeout: 10000,
-      interval: 1,
     },
   ],
 }
 
-// 维护窗口：不需要就留空数组（最干净）
 const maintenances: MaintenanceConfig[] = []
 
-// Don't edit this line
 export { maintenances, pageConfig, workerConfig }
