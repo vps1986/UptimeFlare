@@ -10,7 +10,7 @@ const pageConfig = {
   title: 'Kvx探针',
 
   links: [
-    { link: 'https://kvx.me', label: '博客', highlight: true },
+    { link: 'https://www.nodeseek.com/space/25846#/general', label: '我的主页', highlight: true },
     { link: 'https://pan.sept.cc', label: '网盘' },
     { link: 'https://45678.eu.org', label: '图床1' },
     { link: 'https://img.kvx.me', label: '图床2' },
