@@ -69,28 +69,28 @@ const workerConfig: WorkerConfig = {
     // ===== SSH（TCP 22）=====
     {
       id: 'ssh-ggc',
-      name: '🇺🇸 乔治 ggc（SSH:22）',
+      name: '🇺🇸 乔治',
       method: 'TCP_PING',
       target: '23.173.152.59:22',
       timeout: 10000,
     },
     {
       id: 'ssh-diylink',
-      name: '🇺🇸 diylink（SSH:22）',
+      name: ''🇭🇰 diylink',
       method: 'TCP_PING',
       target: '156.255.90.199:22',
       timeout: 10000,
     },
     {
       id: 'ssh-ikoula',
-      name: '🇫🇷 ikoula（SSH:22）',
+      name: '🇫🇷 ikoula',
       method: 'TCP_PING',
       target: '109.238.6.180:22',
       timeout: 10000,
     },
     {
       id: 'ssh-aliyun',
-      name: '🇸🇬 阿里云（SSH:22）',
+      name: '🇸🇬 阿里云',
       method: 'TCP_PING',
       target: '8.219.168.105:22',
       timeout: 10000,
@@ -99,7 +99,7 @@ const workerConfig: WorkerConfig = {
     // ✅ 新增：alice IPv6 22 端口监控
     {
       id: 'ssh-alice6',
-      name: '🇫🇷 alice（IPv6 / SSH:22）',
+      name: ''🇭🇰 alice',
       method: 'TCP_PING',
       // IPv6 必须用 [IPv6]:port 形式
       target: '[2a14:67c0:302:243::a]:22',
