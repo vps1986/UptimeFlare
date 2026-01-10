@@ -11,7 +11,7 @@ const pageConfig: PageConfig = {
   // Links shown at the header of your status page, could set `highlight` to `true`
   links: [
     { link: 'https://kvx.me', label: '博客', highlight: true },
-    { link: 'https://pan.sepr.cc', label: '网盘' },
+    { link: 'https://pan.sept.cc', label: '网盘' },
     { link: 'https://45678.eu.org', label: '图床1' },
     { link: 'https://img.kvx.me', label: '图床2' },
   ],
@@ -46,7 +46,7 @@ const workerConfig: WorkerConfig = {
     },
     {
       id: 'web-pan',
-      name: '🗂️ pan.sepr.cc（网盘）',
+      name: '🗂️ pan.sept.cc（网盘）',
       method: 'GET',
       target: 'https://pan.sepr.cc',
       tooltip: '网盘服务',
