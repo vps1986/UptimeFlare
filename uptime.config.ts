@@ -18,7 +18,7 @@ const pageConfig = {
 
   // 你的 PageConfig 支持 group（PageConfigGroup：对象映射）
   group: {
-    '🌐 网站服务': ['web-kvx', 'web-pan', 'web-img1', 'web-img2'],
+    '🌐 网站服务': ['web-kvx', 'web-pan', 'web-img1', 'web-img2', 'web-github'],
     '🖥 节点 / SSH': ['ssh-ggc', 'ssh-diylink', 'ssh-ikoula', 'ssh-aliyun', 'ssh-alice6'],
   },
 
