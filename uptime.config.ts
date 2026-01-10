@@ -65,6 +65,15 @@ const workerConfig: WorkerConfig = {
       expectedCodes: [200, 301, 302],
       timeout: 10000,
     },
+    {
+      id: 'web-github',
+      name: '📦 github（github下载）',
+      method: 'GET',
+      target: 'https://git.kvx.me',
+      statusPageLink: 'https://git.kvx.me',
+      expectedCodes: [200, 301, 302],
+      timeout: 10000,
+    },
 
     // ===== SSH（TCP 22）=====
     {
