@@ -18,7 +18,7 @@ const pageConfig = {
 
   // 你的 PageConfig 支持 group（PageConfigGroup：对象映射）
   group: {
-    '🌐 网站服务': ['web-kvx', 'web-pan', 'web-img1', 'web-img2', 'web-github'],
+    '🌐 网站服务': ['web-kvx', 'web-pan', 'web-img1', 'web-img2', 'web-github', 'web-sub'],
     '🖥 节点 / SSH': ['ssh-ggc', 'ssh-diylink', 'ssh-ikoula', 'ssh-aliyun', 'ssh-alice6'],
   },
 
@@ -71,6 +71,15 @@ const workerConfig: WorkerConfig = {
       method: 'GET',
       target: 'https://git.kvx.me',
       statusPageLink: 'https://git.kvx.me',
+      expectedCodes: [200, 301, 302],
+      timeout: 10000,
+    },
+    {
+      id: 'web-sub',
+      name: '🔗 sub.kvx.me（订阅转换）',
+      method: 'GET',
+      target: 'https://sub.kvx.me/admin',
+      statusPageLink: 'https://sub.kvx.me/admin',
       expectedCodes: [200, 301, 302],
       timeout: 10000,
     },
